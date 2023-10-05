@@ -7,6 +7,7 @@ const app = express();
 
 const PORT = process.env.PORT || 2380;
 const TOKEN = process.env.LINE_ACCESS_TOKEN;
+const vercelURL = 'https://aoe-line-bot.vercel.app'
 
 app.use(express.json());
 app.use(
@@ -38,7 +39,7 @@ app.post("/webhook", function (req, res) {
       },
       {
         type: "audio",
-        originalContentUrl: `https://55a9-49-213-171-17.ngrok-free.app/${incomingMessage}.m4a`,
+        originalContentUrl: `${vercelURL}/${incomingMessage}.m4a`,
         duration: replyDuration
       },
     ] : [
