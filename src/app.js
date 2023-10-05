@@ -1,5 +1,8 @@
-const https = require("https");
-const express = require("express");
+import https from 'https'
+import express from 'express'
+import 'dotenv/config'
+import { messageSwitcher } from './helper.js'
+
 const app = express();
 
 const PORT = process.env.PORT || 2380;
@@ -22,18 +25,14 @@ app.post("/webhook", function (req, res) {
   // If the user sends a message to your bot, send a reply message
   if (req.body.events[0].type === "message") {
     // You must stringify reply token and message data to send to the API server
+    const incomingMessage = req.body.events[0].message.text
+    const replyMessage = messageSwitcher(incomingMessage)
     const dataString = JSON.stringify({
-      // Define reply token
       replyToken: req.body.events[0].replyToken,
-      // Define reply messages
       messages: [
         {
           type: "text",
-          text: "Hello, user",
-        },
-        {
-          type: "text",
-          text: "May I help you?",
+          text: replyMessage,
         },
       ],
     });
