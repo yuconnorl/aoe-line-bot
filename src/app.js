@@ -38,11 +38,11 @@ app.post("/webhook", function (req, res) {
         type: "text",
         text: replyMessage,
       },
-      {
-        type: "audio",
-        originalContentUrl: `${vercelURL}/${incomingMessage}.m4a`,
-        duration: replyDuration
-      },
+      // {
+      //   type: "audio",
+      //   originalContentUrl: `${vercelURL}/${incomingMessage}.m4a`,
+      //   duration: replyDuration
+      // },
     ] : [
       {
         type: "text",
