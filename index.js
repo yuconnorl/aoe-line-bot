@@ -14,6 +14,7 @@ app.use(
 
 app.get("/", (req, res) => {
   res.sendStatus(200);
+  console.log('ok');
 });
 
 app.post("/webhook", function (req, res) {
