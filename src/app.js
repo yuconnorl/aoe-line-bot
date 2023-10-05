@@ -80,3 +80,5 @@ app.post("/webhook", function (req, res) {
 app.listen(PORT, () => {
   console.log(`Example app listening at http://localhost:${PORT}`);
 });
+
+export default app
