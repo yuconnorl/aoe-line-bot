@@ -1,7 +1,7 @@
 import https from 'https'
 import express from 'express'
 import 'dotenv/config'
-import { messageSwitcher } from './helper.js'
+import { getReplyMessage, getReplyDuration } from './helper.js'
 
 const app = express();
 
@@ -15,6 +15,8 @@ app.use(
   })
 );
 
+app.use(express.static('public'))
+
 app.get("/", (req, res) => {
   res.sendStatus(200);
   console.log('ok');
@@ -26,15 +28,29 @@ app.post("/webhook", function (req, res) {
   if (req.body.events[0].type === "message") {
     // You must stringify reply token and message data to send to the API server
     const incomingMessage = req.body.events[0].message.text
-    const replyMessage = messageSwitcher(incomingMessage)
+    const replyMessage = getReplyMessage(incomingMessage)
+    const replyDuration = getReplyDuration(incomingMessage)
+
+    const wholeMessage = replyMessage && replyDuration ? [
+      {
+        type: "text",
+        text: replyMessage,
+      },
+      {
+        type: "audio",
+        originalContentUrl: `https://55a9-49-213-171-17.ngrok-free.app/${incomingMessage}.m4a`,
+        duration: replyDuration
+      },
+    ] : [
+      {
+        type: "text",
+        text: 'No result',
+      },
+    ]
+
     const dataString = JSON.stringify({
       replyToken: req.body.events[0].replyToken,
-      messages: [
-        {
-          type: "text",
-          text: replyMessage,
-        },
-      ],
+      messages: wholeMessage
     });
 
     // Request header. See Messaging API reference for specification

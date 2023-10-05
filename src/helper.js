@@ -1,9 +1,16 @@
-import { VOICE_LINE } from './config.js'
+import { VOICE_LINE, VOICE_LINE_DURATION } from './config.js'
 
-function messageSwitcher(message) {
+function getReplyMessage(message) {
   if (!message) return 'no'
 
   return VOICE_LINE[message]
 }
 
-export { messageSwitcher }
+
+function getReplyDuration(message) {
+  if (!message) return 'no'
+
+  return VOICE_LINE_DURATION[message]
+}
+
+export { getReplyMessage, getReplyDuration }
