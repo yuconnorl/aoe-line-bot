@@ -5,8 +5,7 @@
 	"main": ".src/app.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"serve": "node src/app.js",
-		"vercel-build": "echo hello"
+		"start": "node src/index.js"
 	},
 	"keywords": [],
 	"author": "",
