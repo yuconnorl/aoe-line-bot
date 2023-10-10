@@ -7,7 +7,7 @@ const app = express();
 
 const PORT = process.env.PORT || 2380;
 const TOKEN = process.env.LINE_ACCESS_TOKEN;
-const vercelURL = 'https://aoe-line-bot.vercel.app'
+const vercelURL = 'https://aoe-line-bot.zeabur.app/'
 
 app.use(express.json());
 app.use(
@@ -38,11 +38,11 @@ app.post("/webhook", function (req, res) {
         type: "text",
         text: replyMessage,
       },
-      // {
-      //   type: "audio",
-      //   originalContentUrl: `${vercelURL}/${incomingMessage}.m4a`,
-      //   duration: replyDuration
-      // },
+      {
+        type: "audio",
+        originalContentUrl: `${vercelURL}/${incomingMessage}.m4a`,
+        duration: replyDuration
+      },
     ] : [
       {
         type: "text",
