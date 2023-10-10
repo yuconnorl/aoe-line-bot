@@ -9,6 +9,8 @@ const PORT = process.env.PORT || 2380;
 const TOKEN = process.env.LINE_ACCESS_TOKEN;
 const vercelURL = 'https://aoe-line-bot.zeabur.app/'
 
+const numberArr = Object.keys(VOICE_LINE)
+
 app.use(express.json());
 app.use(
   express.urlencoded({
@@ -27,7 +29,7 @@ app.post("/webhook", function (req, res) {
   res.send("HTTP POST request sent to the webhook URL!");
   // If the user sends a message to your bot, send a reply message
   if (!req.body.events[0]?.type) return
-  if (req.body.events[0].type === "message") {
+  if (req.body.events[0].type === "message" && typeof req.body.events[0].message.text === 'number' && numberArr.includes(req.body.events[0].message.text)) {
     // You must stringify reply token and message data to send to the API server
     const incomingMessage = req.body.events[0].message.text
     const replyMessage = getReplyMessage(incomingMessage)
