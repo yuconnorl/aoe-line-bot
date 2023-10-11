@@ -30,28 +30,38 @@ app.post("/webhook", function (req, res) {
   res.send("HTTP POST request sent to the webhook URL!");
   // If the user sends a message to your bot, send a reply message
   if (!req.body.events[0]?.type) return
-  if (req.body.events[0].type === "message" && numberArr.includes(req.body.events[0].message.text)) {
-    // You must stringify reply token and message data to send to the API server
+  if (req.body.events[0].type === "message") {
+    
     const incomingMessage = req.body.events[0].message.text
-    const replyMessage = getReplyMessage(incomingMessage)
-    const replyDuration = getReplyDuration(incomingMessage)
+    let wholeMessage
 
-    const wholeMessage = replyMessage && replyDuration ? [
-      {
-        type: "text",
-        text: replyMessage,
-      },
-      {
-        type: "audio",
-        originalContentUrl: `${serverURL}/${incomingMessage}.m4a`,
-        duration: replyDuration
-      },
-    ] : [
-      {
-        type: "text",
-        text: 'No result',
-      },
-    ]
+    if (!numberArr.includes(incomingMessage) && incomingMessage === 'AEGIS') {
+      let mess = Object.entries(VOICE_LINE).map(([key, value]) => `${key}: ${value}`).join('\n');
+      wholeMessage = [
+        {
+          type: "text",
+          text: mess,
+        },
+      ]
+    }
+      
+    if (numberArr.includes(incomingMessage)) {
+      const replyMessage = getReplyMessage(incomingMessage)
+      const replyDuration = getReplyDuration(incomingMessage)
+
+      wholeMessage = [
+        {
+          type: "text",
+          text: replyMessage,
+        },
+        {
+          type: "audio",
+          originalContentUrl: `${serverURL}/${incomingMessage}.m4a`,
+          duration: replyDuration
+        },
+      ]
+    }
+
 
     const dataString = JSON.stringify({
       replyToken: req.body.events[0].replyToken,
